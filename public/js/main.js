@@ -81,3 +81,30 @@ function createSecondaryMenuItem(item) {
 
   return liItem;
 }
+
+
+var menuItem = function(object) {
+   this.label = object.label;
+   this.link = "";
+   this.items = object.items;
+
+   this.addSecondaryMenu = function() {
+     console.log(this.label + "MTF");
+   }
+
+   this.hasChilds = function() {
+     if (this.items.length > 0) {
+       return true;
+     }
+     return false;
+   }
+}
+
+let myItem = new menuItem({label:"myLabel"});
+
+// myItem.addSecondaryMenu();
+
+console.log(myItem.hasChilds());
+
+
+console.log(myItem.hasChilds());
