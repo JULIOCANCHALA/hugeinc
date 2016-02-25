@@ -1,0 +1,136 @@
+@import "fonts.css"
+
+$mobile-size: 768px
+$medium-size: 1200px
+
+$huge-magenta: #ec008c
+$light-gray: #eee
+$translucent-black: rgba(0, 0, 0, 0.5)
+
+$huge-font: HUGEAvantGardeBold
+$galaxie-font: Galaxie
+
+body
+  margin: 0
+  padding: 0
+  font: 24px/2 $galaxie-font
+
+p
+  margin-top: 0
+
+ul
+  margin: 0
+  padding: 0
+
+// Main Menu
+
+#main-logo
+  width: 60px
+  height: auto
+  margin-right: 48px
+  vertical-align: middle
+  padding: 24px 0
+
+#main-menu
+  background: $huge-magenta
+  color: #FFF
+
+  padding: 0 24px
+  min-height: 72px
+
+  z-index: 20
+
+  @media (max-width:$mobile-size)
+    min-height: 60px
+
+  .primary-menu
+    display: inline-block
+
+    >li
+      position: relative
+      font: 2vmin/1 $huge-font
+
+      >a
+        padding: 24px 24px
+        transition: all 0.2s
+
+        @media (max-width:$medium-size)
+          padding: 24px 15px
+          // font-size: 17px
+
+      >a:hover
+        background: #fff
+        color: $huge-magenta
+        cursor: pointer
+
+    >li:hover
+      .secondary-menu
+        display: block
+
+    .secondary-menu
+      position: absolute
+      font: 16px $galaxie-font
+      list-style: none
+      background: #fff
+      color: #000
+      top: 46px
+      z-index: 10
+      width: 250px
+      padding-top: 12px
+      display: none
+      // opacity: 0
+      transition: all 0.2s
+
+      >li
+        overflow: hidden
+        padding: 20px 24px
+        transition: all 0.2s
+
+      >li:hover
+        background: $light-gray
+        color: $huge-magenta
+        cursor: pointer
+
+
+// Showcase
+
+.showcase
+  position: relative
+  height: 640px
+  overflow: hidden
+  margin-bottom: 60px
+
+  img
+    height: auto
+    width: auto
+    min-width: 100%
+    min-height: 100%
+    margin: auto
+
+  h1
+    position: absolute
+    top: 50%
+    left: 50%
+    -webkit-transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%)
+    margin: 0
+    font: 120px/1 $huge-font
+    letter-spacing: -0.06em
+    text-align: center
+    color: #fff
+
+// Contents
+.content
+  max-width: 968px
+  margin: auto
+  padding: 0 24px
+  text-align: justify
+
+// Helpers
+.inline-list > li
+  display: inline-block
+
+
+@media (max-width:$mobile-size)
+	.hide-mobile
+    display: none !important
