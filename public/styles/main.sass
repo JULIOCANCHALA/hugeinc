@@ -1,13 +1,16 @@
 @import "fonts.css"
 
+// Set screen sizes for viewport
 $mobile-size: 768px
 $medium-size: 992px
 $large-size: 1200px
 
+// Set app colors
 $huge-magenta: #ec008c
 $light-gray: #eee
 $translucent-black: rgba(0, 0, 0, 0.5)
 
+// Set app fonts
 $huge-font: HUGEAvantGardeBold
 $galaxie-font: Galaxie
 
@@ -30,7 +33,11 @@ h1
   font: 1em/1 $huge-font
   font-size: 44px
 
-// Others
+/**********************
+  * MISC ELEMENTS
+  *********************/
+
+// black overlay over the page
 #black-overlay
   position: absolute
   background: $translucent-black
@@ -40,10 +47,13 @@ h1
   display: none
   transition: all 1s linear
 
+// Shows the black overlay
 #black-overlay.open
   display: block
 
-// Main Menu
+/**********************
+  * NAV BAR ITEMS
+  *********************/
 
 #main-logo
   width: 60px
@@ -90,6 +100,11 @@ h1
     left: 100%
     transform: translate(-100%, 0)
     background: url(../images/toggle-close.svg) center center
+
+
+/**********************
+  * PRIMARY MENU
+  *********************/
 
 #primary-menu
   display: inline-block
@@ -145,7 +160,9 @@ h1
   .secondary-menu.open
     padding-top: 12px
 
-// Responsive Menu
+/**********************
+  * RESPONSIVE MENU
+  *********************/
 
 #primary-responsive-menu
   padding-top: 12px
@@ -165,9 +182,11 @@ h1
     .secondary-menu
       font-size: 24px
 
+/**********************
+  * OFFCANVAS MENU
+  * Based on https://github.com/nosoycesaros/offcanvas-muscle of my autorship
+  *********************/
 
-// offcanvas Muscle - Based on https://github.com/nosoycesaros/offcanvas-muscle of my autorship
-// Modified to work better on this project
 .offcanvas
   list-style: none
   width: 75%
@@ -205,7 +224,9 @@ h1
     transition: left 0.4s
 
 
-// Showcase
+/**********************
+  * SHOWCASE IMAGE AND TEXT
+  *********************/
 
 .showcase
   position: relative
@@ -235,7 +256,9 @@ h1
     text-align: center
     color: #fff
 
-// Contents
+/**********************
+  * APP CONTENT
+  *********************/
 .content
   max-width: 968px
   margin: auto
@@ -247,7 +270,10 @@ h1
     margin: 0 0 50px 0
     padding: 0
 
-// Helpers
+/**********************
+  * HELPER CLASSES
+  *********************/
+  
 .inline-list > li
   display: inline-block
 
