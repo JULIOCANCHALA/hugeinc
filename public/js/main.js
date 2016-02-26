@@ -85,26 +85,23 @@ function createSecondaryMenuItem(item) {
 
 var menuItem = function(object) {
    this.label = object.label;
-   this.link = "";
-   this.items = object.items;
+   this.link = object.link || "#";
+   this.items = object.items || [];
+};
 
-   this.addSecondaryMenu = function() {
-     console.log(this.label + "MTF");
-   }
+menuItem.prototype = {
+  getLabel : function () {
+        return this.label;
+    },
 
-   this.hasChilds = function() {
-     if (this.items.length > 0) {
-       return true;
-     }
-     return false;
-   }
+  hasChilds : function() {
+    if (this.items.length > 0) {
+      return true
+    }
+    return false
+  }
 }
 
-let myItem = new menuItem({label:"myLabel"});
+let myItem = new menuItem({label:"myLabel", items:[1,2]});
 
-// myItem.addSecondaryMenu();
-
-console.log(myItem.hasChilds());
-
-
-console.log(myItem.hasChilds());
+console.log( myItem.hasChilds() )
