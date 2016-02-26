@@ -22,6 +22,9 @@ ul
   margin: 0
   padding: 0
 
+a
+  text-decoration: none
+
 // Main Menu
 
 #main-logo
@@ -51,6 +54,7 @@ ul
       font: 24px/1 $huge-font
 
       >a
+        color: #fff
         padding: 24px 24px
         transition: all 0.2s
 
@@ -63,7 +67,7 @@ ul
         color: $huge-magenta
         cursor: pointer
 
-    >li:hover
+    // >li:hover
       .secondary-menu
         display: block
 
@@ -78,18 +82,20 @@ ul
       width: 250px
       padding-top: 12px
       display: none
-      // opacity: 0
       transition: all 0.2s
 
       >li
-        overflow: hidden
-        padding: 20px 24px
-        transition: all 0.2s
+        a
+          padding: 20px 24px
+          color: #000
+          overflow: hidden
+          transition: all 0.2s
+          display: block
 
-      >li:hover
-        background: $light-gray
-        color: $huge-magenta
-        cursor: pointer
+        a:hover
+          background: $light-gray
+          color: $huge-magenta
+          cursor: pointer
 
 
 // Showcase

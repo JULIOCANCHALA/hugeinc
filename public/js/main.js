@@ -28,10 +28,14 @@ xhr.onreadystatechange = function() {
   }
 }
 
+/* MenuItem Model : builds a MenuItem from an json, that can be append in a menu
+ *
+ * @param {JSON} object   : the data containing the label, link and children of this item
+ */
 var MenuItem = function(object) {
   // Set the default vars
   this.label = object.label;
-  this.link = object.link || "#";
+  this.link = object.url || "#";
   this.children = object.items || [];
 
   // Build the main DOM object for this menu item
@@ -40,6 +44,10 @@ var MenuItem = function(object) {
 
 MenuItem.prototype = {
 
+  /* Builds the main DOM Object prepaired to be included in the menu
+   *
+   * @return  void
+   */
   buildDOMObject: function() {
 
     //Set the main DOM object
@@ -55,11 +63,22 @@ MenuItem.prototype = {
     }
   },
 
+  /* Builds the DOM Object for the Main Items
+   *
+   * @return  {DOMObject} listItem     : the DOMObject containing the main item with link and label
+   */
   buildMainItemDOM : function() {
     // Create DOM elements to build the menu
     let listItem = document.createElement("li");
     let itemLink = document.createElement("a");
     let itemText = document.createTextNode(this.label);
+
+    // Add properties to itemLink
+    itemLink.setAttribute("href", this.link);
+    itemLink.setAttribute("tabindex", 0);
+    itemLink.setAttribute("role", "menuitem");
+
+    this.buildEvents(itemLink);
 
     // Add the text element to the Link element
     itemLink.appendChild(itemText);
@@ -68,6 +87,22 @@ MenuItem.prototype = {
 
     // Return the list item
     return listItem;
+  },
+
+  buildEvents: function(itemLink) {
+    let _self = this;
+
+    itemLink.onclick = function(e) {
+      e.preventDefault();
+
+      hideAllSecondaryMenus();
+
+      if (_self.hasChildren()) {
+        _self.showSecondaryMenu();
+      } else {
+        window.location.href = _self.link;
+      }
+    }
   },
 
   /* Builds the secondary menu and its items
@@ -104,6 +139,10 @@ MenuItem.prototype = {
     menuObject.appendChild(this.DOMObject);
   },
 
+  /* Validate if this menu item has sub items
+   *
+   * @return  {True/False}.
+   */
   hasChildren: function() {
     if (this.children.length > 0) {
       return true
@@ -112,12 +151,35 @@ MenuItem.prototype = {
   },
 
   // Get functions
+
+  /* Returns the main DOM Object
+   *
+   * @return  void.
+   */
   getDOMObject: function() {
     return this.DOMObject;
   },
 
+  /* Returns the label of this menu item
+   *
+   * @return  void.
+   */
   getLabel: function() {
     return this.label;
   },
+
+  // Show functions
+  showSecondaryMenu: function() {
+    let secondaryMenu = this.DOMObject.getElementsByClassName('secondary-menu')[0];
+    secondaryMenu.style.display = "block";
+  }
+}
+
+function hideAllSecondaryMenus() {
+  var menus = document.getElementsByClassName('secondary-menu');
+
+  for (let i = 0; i < menus.length; i++) {
+    menus[i].style.display = "none";
+  }
 
 }
