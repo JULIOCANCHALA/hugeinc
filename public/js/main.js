@@ -44,13 +44,21 @@ Menu.prototype = {
 
           let menuItem = new MenuItem(object);
 
-          menuItem.addToMenu(_self.DOMObject);
+          _self.addItem(menuItem.getDOMObject());
         }
 
       } else {
         console.log('Error: ' + xhr.status); // An error occurred during the request.
       }
     }
+  },
+
+  /* Add items to current menu
+   *
+   * @return  void
+   */
+  addItem: function(item) {
+    this.DOMObject.appendChild(item);
   },
 
   /* Create listeners for different elements of the Menu
@@ -432,7 +440,7 @@ MenuItem.prototype = {
       this.DOMObject.dispatchEvent(this.showSubMenu);
     } else {
       // Dispatch the event where the secondary Menu is shrink
-      _self.DOMObject.dispatchEvent(_self.hideSubMenu);
+      this.DOMObject.dispatchEvent(this.hideSubMenu);
     }
   },
 
