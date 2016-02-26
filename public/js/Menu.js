@@ -36,7 +36,7 @@ var Menu = window.Menu = (function(window, document, MenuItem, undefined) {
       .then(function(jsonResponse) {
         // Transform received JSON into MenuItem Objects
       	return jsonResponse.items.map(function(menuItemAttrs) {
-      		return new MenuItem(menuItemAttrs);
+      		return new MenuItem(menuItemAttrs, _self.isResponsive);
       	});
       })
       .then(function(menuItems) {

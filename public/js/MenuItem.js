@@ -6,11 +6,13 @@ var MenuItem = window.MenuItem = (function(window, document, undefined) {
  *
  * @param {JSON} object   : the data containing the label, link and children of this item
  */
-var MenuItem = function(object) {
+var MenuItem = function(object, isResponsive) {
   // Set the default vars
   this.label = object.label;
   this.link = object.url || "#";
   this.children = object.items || [];
+
+  this.isResponsive = isResponsive;
 
   // Build the main DOM object for this menu item
   this.buildDOMElement();
@@ -72,11 +74,20 @@ MenuItem.prototype = {
     let listItem = document.createElement("li");
     let itemLink = document.createElement("a");
     let itemText = document.createTextNode(this.label);
+    let arrowItem = document.createElement("img");
 
     // Add properties to itemLink
     itemLink.setAttribute("href", this.link);
     itemLink.setAttribute("tabindex", 0);
     itemLink.setAttribute("role", "menuitem");
+
+    // Add arrow to responsive menu
+    if (this.isResponsive && this.hasChildren()) {
+      arrowItem.setAttribute('src', 'images/up-chevron.svg');
+      arrowItem.classList.add('arrow');
+
+      itemLink.appendChild(arrowItem);
+    }
 
     this.attachEvents(itemLink);
 
@@ -108,7 +119,6 @@ MenuItem.prototype = {
       if (_self.hasChildren()) {
         // Show or hide secondaryMenu
         _self.toggleSecondaryMenu();
-
       } else { // If this item has no children
 
         // Navigate to self link
@@ -199,6 +209,8 @@ MenuItem.prototype = {
   showSecondaryMenu: function() {
     this.getSecondaryMenu().classList.add("open");
 
+    this.DOMElement.classList.add('active');
+
     //Dispatch the unfold event
     this.DOMElement.dispatchEvent(this.showSubMenu);
   },
@@ -210,6 +222,8 @@ MenuItem.prototype = {
    */
   toggleSecondaryMenu: function() {
     this.getSecondaryMenu().classList.toggle("open");
+
+    this.DOMElement.classList.toggle('active');
 
     // Send the proper events
 

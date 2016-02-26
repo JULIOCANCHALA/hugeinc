@@ -1,11 +1,14 @@
 "use strict";
 
+var primaryMenu = new Menu({name: 'primary-menu'});
+var responsiveMenu = new Menu({name: 'primary-responsive-menu'}, true);
+
 window.addEventListener('load', function(){
-  /*** LOAD MENU ***/
-  var primaryMenu = new Menu({name: 'primary-menu'});
+
+  // Populate primaryMenu
   primaryMenu.populate();
 
-  var responsiveMenu = new Menu({name: 'primary-responsive-menu'}, true);
+  // Populate responsiveMenu
   responsiveMenu.populate();
 }, false);
 
