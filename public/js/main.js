@@ -2,7 +2,7 @@
 
 var Menu = function(object, isResponsive) {
   this.name = object.name;
-  this.DOMObject = document.getElementById(this.name);
+  this.DOMElement = document.getElementById(this.name);
 
   this.blackOverlay = document.getElementById('black-overlay');
 
@@ -17,7 +17,8 @@ var Menu = function(object, isResponsive) {
 
 Menu.prototype = {
 
-  /* Make the ajax call to fill the menu items
+  /**
+   * Make the ajax call to fill the menu items
    *
    * @return  void
    */
@@ -25,43 +26,40 @@ Menu.prototype = {
 
     let _self = this;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/api/nav.json');
-    xhr.send(null);
+    Server.get('nav.json')
 
-    // Taken from http://www.sitepoint.com/guide-vanilla-ajax-without-jquery/
-
-    xhr.onreadystatechange = function() {
-      var DONE = 4; // readyState 4 means the request is done.
-      var OK = 200; // status 200 is a successful return.
-      if (xhr.readyState === DONE) {
-        if (xhr.status === OK)
-        // console.log(xhr.responseText); // 'This is the returned text.'
-
-        var menuData = JSON.parse(xhr.responseText);
-
-        for (let object of menuData.items) {
-
-          let menuItem = new MenuItem(object);
-
-          _self.addItem(menuItem.getDOMObject());
-        }
-
-      } else {
-        console.log('Error: ' + xhr.status); // An error occurred during the request.
-      }
-    }
+    .then(function(response) {
+    	// Parse JSON from response
+    	return JSON.parse(response);
+    })
+    .then(function(jsonResponse) {
+      // Transform received JSON into MenuItem Objects
+    	return jsonResponse.items.map(function(menuItemAttrs) {
+    		return new MenuItem(menuItemAttrs);
+    	});
+    })
+    .then(function(menuItems) {
+    	// add menu items to the menu
+      [].forEach.call(menuItems, function (menuItem) {
+        _self.addItem(menuItem.getDOMElement());
+      });
+    })
+    .catch(function(error) {
+    	throw error;
+    });
   },
 
-  /* Add items to current menu
+  /**
+   * Add items to current menu
    *
    * @return  void
    */
   addItem: function(item) {
-    this.DOMObject.appendChild(item);
+    this.DOMElement.appendChild(item);
   },
 
-  /* Create listeners for different elements of the Menu
+  /**
+   * Create listeners for different elements of the Menu
    *
    * @return  void
    */
@@ -69,9 +67,9 @@ Menu.prototype = {
     let _self = this;
 
     // Listener to submenu unfold
-    this.getDOMObject().addEventListener('unfold', function(e){
+    this.getDOMElement().addEventListener('unfold', function(e){
       //Hide all SubMenus except the one with the event
-      _self.hideAllSubmenusBut(e.detail.secondaryMenu);
+      _self.hideAllSubmenusExcept(e.detail.secondaryMenu);
 
       // If is not a responsive Menu show the black overlay
       if (!_self.isResponsive) {
@@ -80,7 +78,7 @@ Menu.prototype = {
     }, false);
 
     // Listen to submenu shrik
-    this.getDOMObject().addEventListener('shrink', function(e){
+    this.getDOMElement().addEventListener('shrink', function(e){
       // If is not a responsive menu, hide the black overlay
       if (!_self.isResponsive) {
         _self.hideBlackOverlay();
@@ -96,7 +94,8 @@ Menu.prototype = {
 
   // Based on offcanvas Muscle [https://github.com/nosoycesaros/offcanvas-muscle] of my autorship
 
-  /* Find the toggle button for the menu
+  /**
+   * Find the toggle button for the menu
    * Set the open event
    *
    * @return  void
@@ -111,7 +110,8 @@ Menu.prototype = {
     });
   },
 
-  /* Close all open ellements:
+  /**
+   * Close all open ellements:
    * Submenus, responsiveMenu, and Black Overlay
    *
    * @return  void
@@ -126,17 +126,18 @@ Menu.prototype = {
     this.hideBlackOverlay();
   },
 
-  /* Toggle the offcanvas menu and all his elements
+  /**
+   * Toggle the offcanvas menu and all his elements
    *
    * @return  void
    */
   toggleResponsiveMenu: function() {
-      this.DOMObject.classList.toggle('open');
+      this.DOMElement.classList.toggle('open');
 
       let siteWrap = document.getElementsByClassName('site-wrap')[0];
       siteWrap.classList.toggle('open');
 
-      if (this.DOMObject.classList.contains('left')) {
+      if (this.DOMElement.classList.contains('left')) {
           siteWrap.classList.toggle('left');
       }
 
@@ -151,17 +152,18 @@ Menu.prototype = {
       this.toggleBlackOverlay();
   },
 
-  /* Close all elements of the offcanvas menu
+  /**
+   * Close all elements of the offcanvas menu
    *
    * @return  void
    */
   closeResponsiveMenu: function() {
-    this.DOMObject.classList.toggle('open');
+    this.DOMElement.classList.remove('open');
 
     let siteWrap = document.getElementsByClassName('site-wrap')[0];
     siteWrap.classList.remove('open');
 
-    if (this.DOMObject.classList.contains('left')) {
+    if (this.DOMElement.classList.contains('left')) {
         siteWrap.classList.remove('left');
     }
 
@@ -173,24 +175,26 @@ Menu.prototype = {
     mainLogo.classList.remove('open');
   },
 
-  /* Hide all submenus
+  /**
+   * Hide all submenus
    *
    * @return  void
    */
   hideAllSubmenus: function() {
-    let subMenus = this.DOMObject.getElementsByClassName('secondary-menu');
+    let subMenus = this.DOMElement.getElementsByClassName('secondary-menu');
 
     [].forEach.call(subMenus, function (subMenu) {
       subMenu.classList.remove('open');
     });
   },
 
-  /* Hide all submenus except the one given
+  /**
+   * Hide all submenus except the one given
    *
    * @return  void
    */
-  hideAllSubmenusBut: function(secondaryMenu) {
-    let subMenus = this.DOMObject.getElementsByClassName('secondary-menu');
+  hideAllSubmenusExcept: function(secondaryMenu) {
+    let subMenus = this.DOMElement.getElementsByClassName('secondary-menu');
 
     [].forEach.call(subMenus, function (subMenu) {
       if (subMenu != secondaryMenu) {
@@ -199,7 +203,8 @@ Menu.prototype = {
     });
   },
 
-  /* Show and hide the black overlay over the page
+  /** 
+   * Show and hide the black overlay over the page
    *
    * @return  void
    */
@@ -207,7 +212,8 @@ Menu.prototype = {
     this.blackOverlay.classList.toggle('open');
   },
 
-  /* Show a black overlay over the page
+  /**
+   * Show a black overlay over the page
    *
    * @return  void
    */
@@ -215,7 +221,8 @@ Menu.prototype = {
     this.blackOverlay.classList.add('open');
   },
 
-  /* Hide the black overlay over the page
+  /**
+   * Hide the black overlay over the page
    *
    * @return  void
    */
@@ -223,17 +230,19 @@ Menu.prototype = {
     this.blackOverlay.classList.remove('open');
   },
 
-  /* Get the DOM object of this menu
+  /**
+   * Get the DOM object of this menu
    *
    * @return  void
    */
-  getDOMObject: function() {
-    return this.DOMObject;
+  getDOMElement: function() {
+    return this.DOMElement;
   },
 }
 
 
-/* MenuItem Model : builds a MenuItem from an json, that can be append in a menu
+/**
+ * MenuItem Model : builds a MenuItem from an json, that can be append in a menu
  *
  * @param {JSON} object   : the data containing the label, link and children of this item
  */
@@ -244,7 +253,7 @@ var MenuItem = function(object) {
   this.children = object.items || [];
 
   // Build the main DOM object for this menu item
-  this.buildDOMObject();
+  this.buildDOMElement();
 
   this.showSubMenu = new CustomEvent(
     "unfold",
@@ -273,28 +282,30 @@ var MenuItem = function(object) {
 
 MenuItem.prototype = {
 
-  /* Builds the main DOM Object prepaired to be included in the menu
+  /**
+   * Builds the main DOM Object prepaired to be included in the menu
    *
    * @return  void
    */
-  buildDOMObject: function() {
+  buildDOMElement: function() {
 
     //Set the main DOM object
-    this.DOMObject = this.buildMainItemDOM();
+    this.DOMElement = this.buildMainItemDOM();
 
     // Lets build the children!
     //If this item has children
     if (this.hasChildren()) {
       // Build the SecondaryMenu DOM
-      let childrenDOM = this.buildChildrenDOM();
+      let childrenDOM = this.createChildrenElements();
       //Add SecondaryMenuDOM to the main DOM
-      this.DOMObject.appendChild(childrenDOM);
+      this.DOMElement.appendChild(childrenDOM);
     }
   },
 
-  /* Builds the DOM Object for the Main Items
+  /**
+   * Builds the DOM Object for the Main Items
    *
-   * @return  {DOMObject} listItem     : the DOMObject containing the main item with link and label
+   * @return  {DOMElement} listItem     : the DOMElement containing the main item with link and label
    */
   buildMainItemDOM: function() {
     // Create DOM elements to build the menu
@@ -307,7 +318,7 @@ MenuItem.prototype = {
     itemLink.setAttribute("tabindex", 0);
     itemLink.setAttribute("role", "menuitem");
 
-    this.buildEvents(itemLink);
+    this.attachEvents(itemLink);
 
     // Add the text element to the Link element
     itemLink.appendChild(itemText);
@@ -318,12 +329,13 @@ MenuItem.prototype = {
     return listItem;
   },
 
-  /* Builds events for this A element
+  /**
+   * Builds events for this A element
    *
-   * @param   {DOMObject} itemLink    : the A item which we will put the events
+   * @param   {DOMElement} itemLink    : the A item which we will put the events
    * @return  void
    */
-  buildEvents: function(itemLink) {
+  attachEvents: function(itemLink) {
     //Save this for inner functions
     let _self = this;
 
@@ -345,12 +357,13 @@ MenuItem.prototype = {
     }
   },
 
-  /* Builds the secondary menu and its items
+  /**
+   * Builds the secondary menu and its items
    * The items are instances of MenuItem model
    *
-   * @return  {DOMObject} secondaryMenu     : the DOMObject containing the secondary menu and items
+   * @return  {DOMElement} secondaryMenu     : the DOMElement containing the secondary menu and items
    */
-  buildChildrenDOM: function() {
+  createChildrenElements: function() {
     // Create the ul element to host the secondaryMenu
     let secondaryMenu = document.createElement("ul");
     // Assign properties to the secondaryMenu
@@ -368,18 +381,20 @@ MenuItem.prototype = {
     return secondaryMenu;
   },
 
-  /* Append the DOM object of this Menu Item
+  /**
+   * Append the DOM object of this Menu Item
    * to a given Menu Object
    *
-   * @param   {DOMObject} menuObject :  the menu object that will receive the menuItem
+   * @param   {DOMElement} menuObject :  the menu object that will receive the menuItem
    * @return  void.
    */
   addToMenu: function(menuObject) {
     // Append to a given Menu Object
-    menuObject.appendChild(this.DOMObject);
+    menuObject.appendChild(this.DOMElement);
   },
 
-  /* Validate if this menu item has sub items
+  /**
+   * Validate if this menu item has sub items
    *
    * @return  {boolean}.
    */
@@ -392,19 +407,21 @@ MenuItem.prototype = {
 
   // Get functions
 
-  /* Returns the main DOM Object
+  /**
+   * Returns the main DOM Object
    *
    * @return  void.
    */
-  getDOMObject: function() {
-    return this.DOMObject;
+  getDOMElement: function() {
+    return this.DOMElement;
   },
 
   getSecondaryMenu: function() {
-    return this.DOMObject.getElementsByClassName('secondary-menu')[0];
+    return this.DOMElement.getElementsByClassName('secondary-menu')[0];
   },
 
-  /* Returns the label of this menu item
+  /**
+   * Returns the label of this menu item
    *
    * @return  void.
    */
@@ -414,7 +431,8 @@ MenuItem.prototype = {
 
   // SecondaryMenu functions
 
-  /* show the Secondary Menu of this item
+  /**
+   * show the Secondary Menu of this item
    *
    * @return  void.
    */
@@ -422,10 +440,11 @@ MenuItem.prototype = {
     this.getSecondaryMenu().classList.add("open");
 
     //Dispatch the unfold event
-    this.DOMObject.dispatchEvent(this.showSubMenu);
+    this.DOMElement.dispatchEvent(this.showSubMenu);
   },
 
-  /* toggle the Secondary Menu of this item
+  /**
+   * toggle the Secondary Menu of this item
    *
    * @return  void.
    */
@@ -437,14 +456,15 @@ MenuItem.prototype = {
     // If secondary Menu is open
     if (this.secondaryMenuIsOpen()) {
       //Dispatch the proper event
-      this.DOMObject.dispatchEvent(this.showSubMenu);
+      this.DOMElement.dispatchEvent(this.showSubMenu);
     } else {
       // Dispatch the event where the secondary Menu is shrink
-      this.DOMObject.dispatchEvent(this.hideSubMenu);
+      this.DOMElement.dispatchEvent(this.hideSubMenu);
     }
   },
 
-  /* Evaluate if the secondary Menu is open
+  /**
+   * Evaluate if the secondary Menu is open
    *
    * @return  {boolean}.
    */
