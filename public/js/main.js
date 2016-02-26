@@ -88,7 +88,11 @@ Menu.prototype = {
 
   // Based on offcanvas Muscle [https://github.com/nosoycesaros/offcanvas-muscle] of my autorship
 
-  
+  /* Find the toggle button for the menu
+   * Set the open event
+   *
+   * @return  void
+   */
   addResponsiveEvent: function(){
     let _self = this;
     let responsiveButton = document.getElementById(this.name + '-button');
@@ -99,6 +103,11 @@ Menu.prototype = {
     });
   },
 
+  /* Close all open ellements:
+   * Submenus, responsiveMenu, and Black Overlay
+   *
+   * @return  void
+   */
   closeAll: function() {
     this.hideAllSubmenus();
 
@@ -109,6 +118,10 @@ Menu.prototype = {
     this.hideBlackOverlay();
   },
 
+  /* Toggle the offcanvas menu and all his elements
+   *
+   * @return  void
+   */
   toggleResponsiveMenu: function() {
       this.DOMObject.classList.toggle('open');
 
@@ -130,6 +143,10 @@ Menu.prototype = {
       this.toggleBlackOverlay();
   },
 
+  /* Close all elements of the offcanvas menu
+   *
+   * @return  void
+   */
   closeResponsiveMenu: function() {
     this.DOMObject.classList.toggle('open');
 
@@ -148,6 +165,10 @@ Menu.prototype = {
     mainLogo.classList.remove('open');
   },
 
+  /* Hide all submenus
+   *
+   * @return  void
+   */
   hideAllSubmenus: function() {
     let subMenus = this.DOMObject.getElementsByClassName('secondary-menu');
 
@@ -156,6 +177,10 @@ Menu.prototype = {
     });
   },
 
+  /* Hide all submenus except the one given
+   *
+   * @return  void
+   */
   hideAllSubmenusBut: function(secondaryMenu) {
     let subMenus = this.DOMObject.getElementsByClassName('secondary-menu');
 
@@ -166,25 +191,37 @@ Menu.prototype = {
     });
   },
 
+  /* Show and hide the black overlay over the page
+   *
+   * @return  void
+   */
   toggleBlackOverlay: function() {
     this.blackOverlay.classList.toggle('open');
   },
 
+  /* Show a black overlay over the page
+   *
+   * @return  void
+   */
   showBlackOverlay: function() {
     this.blackOverlay.classList.add('open');
   },
 
+  /* Hide the black overlay over the page
+   *
+   * @return  void
+   */
   hideBlackOverlay: function() {
     this.blackOverlay.classList.remove('open');
   },
 
+  /* Get the DOM object of this menu
+   *
+   * @return  void
+   */
   getDOMObject: function() {
     return this.DOMObject;
   },
-
-  getChildren: function() {
-    return this.DOMObject.children;
-  }
 }
 
 
