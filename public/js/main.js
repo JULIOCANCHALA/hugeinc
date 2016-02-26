@@ -4,7 +4,7 @@ var xhr = new XMLHttpRequest();
 xhr.open('GET', '/api/nav.json');
 xhr.send(null);
 
-// From http://www.sitepoint.com/guide-vanilla-ajax-without-jquery/
+// Taken from http://www.sitepoint.com/guide-vanilla-ajax-without-jquery/
 
 xhr.onreadystatechange = function() {
   var DONE = 4; // readyState 4 means the request is done.
@@ -179,6 +179,8 @@ MenuItem.prototype = {
 
 }
 
+
+// TODO: Polish blackOverlay code
 let blackOverlay = document.getElementById('black-overlay');
 
 blackOverlay.addEventListener("click", function() {
@@ -199,4 +201,37 @@ function hideAllSecondaryMenus() {
   for (let i = 0; i < menus.length; i++) {
     menus[i].style.display = "none";
   }
+}
+
+
+// offcanvas Muscle - Based on https://github.com/nosoycesaros/offcanvas-muscle of my autorship
+offcanvasMuscle();
+
+function offcanvasMuscle() {
+    var triggers = document.getElementsByClassName('offcanvas-trigger');
+
+    for (var i = 0; i < triggers.length; i++) {
+        triggers[i].addEventListener("click", function() {
+            var targetMenu = this.getAttribute('offcanvas-menu');
+            toggleOffcanvasMuscleMenu(targetMenu);
+        });
+    }
+}
+
+function toggleOffcanvasMuscleMenu(menuId) {
+    var myMenu = document.getElementById(menuId);
+
+    myMenu.classList.toggle('open');
+
+    var siteWrap = document.getElementsByClassName('site-wrap')[0];
+    siteWrap.classList.toggle('open');
+
+    if (myMenu.classList.contains('left'))
+        siteWrap.classList.toggle('left');
+
+        var menuIcon = document.getElementsByClassName('menu-icon');
+        menuIcon[0].classList.toggle('open');
+
+        var mainLogo = document.getElementById('main-logo');
+        mainLogo.classList.toggle('open');
 }

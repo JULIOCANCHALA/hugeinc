@@ -26,6 +26,10 @@ ul
 a
   text-decoration: none
 
+h1
+  font: 1em/1 $huge-font
+  font-size: 44px
+
 // Others
 #black-overlay
   position: absolute
@@ -45,6 +49,16 @@ a
   vertical-align: middle
   padding: 24px 0
 
+  transition: all 0.7s
+
+  @media (max-width:$mobile-size)
+    position: absolute
+    left: -100%
+
+#main-logo.open
+  @media (max-width:$mobile-size)
+    left: 24px
+
 #main-menu
   background: $huge-magenta
   color: #FFF
@@ -53,6 +67,7 @@ a
   min-height: 72px
 
   z-index: 20
+  position: relative
 
   @media (max-width:$mobile-size)
     min-height: 60px
@@ -111,6 +126,55 @@ a
           color: $huge-magenta
           cursor: pointer
 
+  // Responsive Menu
+  .menu-icon
+    height: 72px
+    position: absolute
+    top: 0
+    left: 0
+    transition: all 0.5s
+
+  .menu-icon.open
+    // right: 0
+    left: 100%
+    transform: translate(-100%, 0)
+
+// offcanvas Muscle - Based on https://github.com/nosoycesaros/offcanvas-muscle of my autorship
+// Modified to work better on this project
+.offcanvas
+  list-style: none
+  width: 75%
+  height: 100%
+  position: fixed
+  top: 72px
+  z-index: 0
+
+  padding: 0
+  margin: 0
+
+  box-sizing:border-box
+  overflow-y: scroll
+
+.offcanvas.left
+    left: -100%
+.offcanvas.left.open
+    left: 0
+
+.site-wrap
+    min-width: 100%
+    min-height: 100%
+    position: relative
+    top: 0
+    bottom: 100%
+    left: 0
+    z-index: 1
+
+.site-wrap.open.left
+    left: 75%
+
+.site-wrap, .offcanvas
+    transition: left 0.4s
+
 
 // Showcase
 
@@ -119,6 +183,9 @@ a
   height: 640px
   overflow: hidden
   margin-bottom: 60px
+
+  @media (max-width:$mobile-size)
+    margin-bottom: 50px
 
   img
     height: auto
@@ -134,7 +201,7 @@ a
     -webkit-transform: translate(-50%, -50%)
     transform: translate(-50%, -50%)
     margin: 0
-    font: 120px/1 $huge-font
+    font-size: 120px
     letter-spacing: -0.06em
     text-align: center
     color: #fff
@@ -146,9 +213,18 @@ a
   padding: 0 24px
   text-align: justify
 
+  h1
+    text-align: left
+    margin: 0 0 50px 0
+    padding: 0
+
 // Helpers
 .inline-list > li
   display: inline-block
+
+@media (min-width:$mobile-size)
+  .hide-tablet
+    display: none !important
 
 @media (max-width:$mobile-size)
 	.hide-mobile

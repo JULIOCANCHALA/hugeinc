@@ -6,7 +6,7 @@
 </head>
 <body>
   <nav id="main-menu">
-    <img src="images/HUGE-white.png" alt="" id="main-logo" class="hide-mobile">
+    <img src="images/HUGE-white.png" alt="" id="main-logo" >
     <ul class="primary-menu inline-list hide-mobile">
         <!-- Loads all menu data from /api/nav.json -->
         <!-- <li>
@@ -18,10 +18,27 @@
           </ul>
         </li> -->
     </ul>
+
+    <div class="menu-icon hide-tablet">
+      <img src="images/toggle-open.svg" alt="" class="offcanvas-trigger" offcanvas-menu="primary-menu-left" />
+    </div>
   </nav>
 
-  <div id="black-overlay">
 
+      <ul class="offcanvas left" id="primary-menu-left">
+        <li>
+          Work
+        </li>
+        <li>
+          Other
+        </li>
+      </ul>
+
+
+
+<div class="site-wrap">
+
+  <div id="black-overlay">
   </div>
 
   <div class="showcase">
@@ -29,6 +46,7 @@
     <h1 class="hide-mobile">Get paid for giving a shit.</h1>
   </div>
   <div class="content">
+    <h1 class="hide-tablet">Get paid for giving a shit.</h1>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet tristique orci, ut suscipit diam. Mauris lobortis, ipsum non blandit varius, leo magna faucibus lacus, et mollis justo risus in arcu. Praesent dignissim gravida auctor. Proin vehicula ipsum et nibh vulputate, id feugiat nibh suscipit. Donec ac nisi nec justo vehicula pretium. Nullam ipsum quam, molestie sit amet erat vitae, suscipit pretium dolor. Sed mattis fringilla magna in tincidunt. Nulla vel neque venenatis, malesuada neque ac, malesuada enim.
     </p>
@@ -36,6 +54,8 @@
       Donec quis enim risus. Etiam semper condimentum sem quis congue. Vivamus finibus ligula libero, vitae efficitur magna vehicula vel. Duis imperdiet nec tortor ac viverra. Maecenas dictum est eu ante porttitor, non laoreet elit scelerisque. Vestibulum vel enim sed arcu suscipit scelerisque eu eget purus. Cras varius, dui elementum pretium egestas, mauris tortor congue felis, sit amet hendrerit diam eros eu purus. Quisque aliquet sagittis turpis ac hendrerit. Suspendisse a metus vel arcu varius cursus.
     </p>
   </div>
+
+</div>
 
 <script src="js/main.js" type="text/javascript"></script>
 
