@@ -1,39 +1,5 @@
 "use strict";
 
-var xhr = new XMLHttpRequest();
-xhr.open('GET', '/api/nav.json');
-xhr.send(null);
-
-// Taken from http://www.sitepoint.com/guide-vanilla-ajax-without-jquery/
-
-xhr.onreadystatechange = function() {
-  var DONE = 4; // readyState 4 means the request is done.
-  var OK = 200; // status 200 is a successful return.
-  if (xhr.readyState === DONE) {
-    if (xhr.status === OK)
-    // console.log(xhr.responseText); // 'This is the returned text.'
-
-      var menuData = JSON.parse(xhr.responseText);
-
-    for (let object of menuData.items) {
-      let primaryMenuItem = new MenuItem(object);
-      let primaryMenu = document.getElementsByClassName("primary-menu")[0];
-
-      primaryMenuItem.addToMenu(primaryMenu);
-
-
-      let responsiveMenuItem = new MenuItem(object);
-      let responsiveMenu = document.getElementById("primary-responsive-menu");
-
-      responsiveMenuItem.addToMenu(responsiveMenu);
-    }
-
-  } else {
-    console.log('Error: ' + xhr.status); // An error occurred during the request.
-  }
-}
-
-
 // TODO: Polish blackOverlay code
 let blackOverlay = document.getElementById('black-overlay');
 
@@ -126,7 +92,44 @@ function closeOffcanvasMenu(menuId) {
 }
 
 
+var Menu = function(object) {
+  this.name = object.name;
+  this.DOMObject = document.getElementById(this.name);
+}
 
+Menu.prototype = {
+  populate: function() {
+
+    let _self = this;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/api/nav.json');
+    xhr.send(null);
+
+    // Taken from http://www.sitepoint.com/guide-vanilla-ajax-without-jquery/
+
+    xhr.onreadystatechange = function() {
+      var DONE = 4; // readyState 4 means the request is done.
+      var OK = 200; // status 200 is a successful return.
+      if (xhr.readyState === DONE) {
+        if (xhr.status === OK)
+        // console.log(xhr.responseText); // 'This is the returned text.'
+
+        var menuData = JSON.parse(xhr.responseText);
+
+        for (let object of menuData.items) {
+
+          let menuItem = new MenuItem(object);
+
+          menuItem.addToMenu(_self.DOMObject);
+        }
+
+      } else {
+        console.log('Error: ' + xhr.status); // An error occurred during the request.
+      }
+    }
+  }
+}
 
 
 /* MenuItem Model : builds a MenuItem from an json, that can be append in a menu
@@ -287,3 +290,11 @@ MenuItem.prototype = {
   }
 
 }
+
+
+/*** LOAD MENU ***/
+var primaryMenu = new Menu({name: 'primary-menu'});
+primaryMenu.populate();
+
+var responsiveMenu = new Menu({name: 'primary-responsive-menu'});
+responsiveMenu.populate();

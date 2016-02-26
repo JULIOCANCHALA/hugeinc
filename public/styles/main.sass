@@ -76,66 +76,6 @@ h1
   @media (max-width:$mobile-size)
     min-height: 60px
 
-  .primary-menu
-    display: inline-block
-
-    >li
-      position: relative
-      font: 24px/1 $huge-font
-
-      >a
-        color: #fff
-        padding: 24px 24px
-        transition: all 0.2s
-
-        @media (max-width:$large-size)
-          padding: 24px 15px
-
-        @media (max-width:$medium-size)
-          font-size: 18px
-          padding: 24px 12px
-
-      >a:hover
-        background: #fff
-        color: $huge-magenta
-        cursor: pointer
-
-    // >li:hover
-      .secondary-menu
-        display: block
-
-    .secondary-menu
-      position: absolute
-      font: 16px $galaxie-font
-      list-style: none
-      background: #fff
-      color: #000
-      top: 46px
-      z-index: 15
-      width: 250px
-      padding-top: 0
-
-      overflow: hidden
-      max-height: 0
-      transition: all 0.2s
-
-      >li
-        a
-          padding: 20px 24px
-          color: #000
-          overflow: hidden
-          transition: all 0.2s
-          display: block
-
-        a:hover
-          background: $light-gray
-          color: $huge-magenta
-          cursor: pointer
-
-    .secondary-menu.open
-      max-height: 1000px
-      padding-top: 12px
-
   // Responsive Menu Icon
   .menu-icon
     height: 72px
@@ -145,9 +85,62 @@ h1
     transition: all 0.5s
 
   .menu-icon.open
-    // right: 0
     left: 100%
     transform: translate(-100%, 0)
+
+#primary-menu
+  display: inline-block
+
+  >li
+    position: relative
+    font: 24px/1 $huge-font
+
+    >a
+      color: #fff
+      padding: 24px 24px
+      transition: all 0.2s
+
+      @media (max-width:$large-size)
+        padding: 24px 15px
+
+      @media (max-width:$medium-size)
+        font-size: 18px
+        padding: 24px 12px
+
+    >a:hover
+      background: #fff
+      color: $huge-magenta
+      cursor: pointer
+
+    // >li:hover
+      .secondary-menu
+        display: block
+
+  .secondary-menu
+    position: absolute
+    font-size: 16px
+    background: #fff
+    top: 46px
+    z-index: 15
+    width: 250px
+    padding-top: 0
+    transition: all 0.2s
+
+    >li
+      a
+        padding: 20px 24px
+        color: #000
+        overflow: hidden
+        transition: all 0.2s
+        display: block
+
+      a:hover
+        background: $light-gray
+        color: $huge-magenta
+        cursor: pointer
+
+  .secondary-menu.open
+    padding-top: 12px
 
 // Responsive Menu
 
@@ -167,13 +160,7 @@ h1
       color: $huge-magenta
 
     .secondary-menu
-      font: 24px $galaxie-font
-      overflow: hidden
-      max-height: 0
-      transition: all 0.5s
-
-    .secondary-menu.open
-      max-height: 1000px
+      font-size: 24px
 
 
 // offcanvas Muscle - Based on https://github.com/nosoycesaros/offcanvas-muscle of my autorship
@@ -260,6 +247,15 @@ h1
 // Helpers
 .inline-list > li
   display: inline-block
+
+.secondary-menu
+  font-family: $galaxie-font
+  overflow: hidden
+  max-height: 0
+  transition: all 0.5s
+
+.secondary-menu.open
+  max-height: 1000px
 
 @media (min-width:$mobile-size)
   .hide-tablet
