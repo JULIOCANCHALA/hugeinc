@@ -1,7 +1,8 @@
 @import "fonts.css"
 
 $mobile-size: 768px
-$medium-size: 1200px
+$medium-size: 992px
+$large-size: 1200px
 
 $huge-magenta: #ec008c
 $light-gray: #eee
@@ -68,9 +69,12 @@ a
         padding: 24px 24px
         transition: all 0.2s
 
-        @media (max-width:$medium-size)
+        @media (max-width:$large-size)
           padding: 24px 15px
-          // font-size: 17px
+
+        @media (max-width:$medium-size)
+          font-size: 18px
+          padding: 24px 12px
 
       >a:hover
         background: #fff
