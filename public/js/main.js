@@ -1,103 +1,26 @@
 "use strict";
 
-// TODO: Polish blackOverlay code
-let blackOverlay = document.getElementById('black-overlay');
-
-blackOverlay.addEventListener("click", function() {
-  hideAllSecondaryMenus();
-
-  blackOverlay.classList.remove('open');
-
-  closeOffcanvasMenu('primary-responsive-menu');
-});
-
-function showBlackOverlay() {
-  let blackOverlay = document.getElementById('black-overlay');
-
-    blackOverlay.classList.add('open');
-}
-
-function hideAllSecondaryMenus() {
-  var menus = document.getElementsByClassName('secondary-menu');
-
-  for (let i = 0; i < menus.length; i++) {
-    menus[i].classList.remove('open');
-  }
-}
-
-function hideAllSecondaryMenus(secondaryMenu) {
-  var menus = document.getElementsByClassName('secondary-menu');
-
-  for (let i = 0; i < menus.length; i++) {
-    if (menus[i] != secondaryMenu) {
-      menus[i].classList.remove('open');
-    }
-  }
-}
-
-// offcanvas Muscle - Based on https://github.com/nosoycesaros/offcanvas-muscle of my autorship
-offcanvasMuscle();
-
-function offcanvasMuscle() {
-    var triggers = document.getElementsByClassName('offcanvas-trigger');
-
-    for (var i = 0; i < triggers.length; i++) {
-        triggers[i].addEventListener("click", function() {
-            var targetMenu = this.getAttribute('offcanvas-menu');
-            toggleOffcanvasMuscleMenu(targetMenu);
-        });
-    }
-}
-
-function toggleOffcanvasMuscleMenu(menuId) {
-    var myMenu = document.getElementById(menuId);
-
-    myMenu.classList.toggle('open');
-
-    var siteWrap = document.getElementsByClassName('site-wrap')[0];
-    siteWrap.classList.toggle('open');
-
-    if (myMenu.classList.contains('left'))
-        siteWrap.classList.toggle('left');
-
-    // Added for this project
-    var menuIcon = document.getElementsByClassName('menu-icon');
-    menuIcon[0].classList.toggle('open');
-
-    var mainLogo = document.getElementById('main-logo');
-    mainLogo.classList.toggle('open');
-
-    blackOverlay.classList.toggle('open');
-}
-
-function closeOffcanvasMenu(menuId) {
-    var myMenu = document.getElementById(menuId);
-
-    myMenu.classList.remove('open');
-
-    var siteWrap = document.getElementsByClassName('site-wrap')[0];
-    siteWrap.classList.remove('open');
-
-    if (myMenu.classList.contains('left'))
-        siteWrap.classList.remove('left');
-
-    // Added for this project
-    var menuIcon = document.getElementsByClassName('menu-icon');
-    menuIcon[0].classList.remove('open');
-
-    var mainLogo = document.getElementById('main-logo');
-    mainLogo.classList.remove('open');
-
-    blackOverlay.classList.remove('open');
-}
-
-
-var Menu = function(object) {
+var Menu = function(object, isResponsive) {
   this.name = object.name;
   this.DOMObject = document.getElementById(this.name);
+
+  this.blackOverlay = document.getElementById('black-overlay');
+
+  this.isResponsive = isResponsive;
+
+  if (isResponsive) {
+    this.addResponsiveEvent();
+  }
+
+  this.listenEvents();
 }
 
 Menu.prototype = {
+
+  /* Make the ajax call to fill the menu items
+   *
+   * @return  void
+   */
   populate: function() {
 
     let _self = this;
@@ -128,6 +51,139 @@ Menu.prototype = {
         console.log('Error: ' + xhr.status); // An error occurred during the request.
       }
     }
+  },
+
+  /* Create listeners for different elements of the Menu
+   *
+   * @return  void
+   */
+  listenEvents: function(){
+    let _self = this;
+
+    // Listener to submenu unfold
+    this.getDOMObject().addEventListener('unfold', function(e){
+      //Hide all SubMenus except the one with the event
+      _self.hideAllSubmenusBut(e.detail.secondaryMenu);
+
+      // If is not a responsive Menu show the black overlay
+      if (!_self.isResponsive) {
+        _self.showBlackOverlay();
+      }
+    }, false);
+
+    // Listen to submenu shrik
+    this.getDOMObject().addEventListener('shrink', function(e){
+      // If is not a responsive menu, hide the black overlay
+      if (!_self.isResponsive) {
+        _self.hideBlackOverlay();
+      }
+    }, false);
+
+    // Listen to blackOverlay click
+    this.blackOverlay.addEventListener("click", function() {
+      //Close all elements when click to black overlay
+      _self.closeAll();
+    });
+  },
+
+  // Based on offcanvas Muscle [https://github.com/nosoycesaros/offcanvas-muscle] of my autorship
+
+  
+  addResponsiveEvent: function(){
+    let _self = this;
+    let responsiveButton = document.getElementById(this.name + '-button');
+
+    responsiveButton.addEventListener("click", function() {
+        let targetMenu = this.getAttribute('offcanvas-menu');
+        _self.toggleResponsiveMenu(targetMenu);
+    });
+  },
+
+  closeAll: function() {
+    this.hideAllSubmenus();
+
+    if (this.isResponsive) {
+      this.closeResponsiveMenu();
+    }
+
+    this.hideBlackOverlay();
+  },
+
+  toggleResponsiveMenu: function() {
+      this.DOMObject.classList.toggle('open');
+
+      let siteWrap = document.getElementsByClassName('site-wrap')[0];
+      siteWrap.classList.toggle('open');
+
+      if (this.DOMObject.classList.contains('left')) {
+          siteWrap.classList.toggle('left');
+      }
+
+      // Added for this project
+      var menuIcon = document.getElementsByClassName('menu-icon');
+      menuIcon[0].classList.toggle('open');
+
+      var mainLogo = document.getElementById('main-logo');
+      mainLogo.classList.toggle('open');
+
+
+      this.toggleBlackOverlay();
+  },
+
+  closeResponsiveMenu: function() {
+    this.DOMObject.classList.toggle('open');
+
+    let siteWrap = document.getElementsByClassName('site-wrap')[0];
+    siteWrap.classList.remove('open');
+
+    if (this.DOMObject.classList.contains('left')) {
+        siteWrap.classList.remove('left');
+    }
+
+    // Added for this project
+    var menuIcon = document.getElementsByClassName('menu-icon');
+    menuIcon[0].classList.remove('open');
+
+    var mainLogo = document.getElementById('main-logo');
+    mainLogo.classList.remove('open');
+  },
+
+  hideAllSubmenus: function() {
+    let subMenus = this.DOMObject.getElementsByClassName('secondary-menu');
+
+    [].forEach.call(subMenus, function (subMenu) {
+      subMenu.classList.remove('open');
+    });
+  },
+
+  hideAllSubmenusBut: function(secondaryMenu) {
+    let subMenus = this.DOMObject.getElementsByClassName('secondary-menu');
+
+    [].forEach.call(subMenus, function (subMenu) {
+      if (subMenu != secondaryMenu) {
+        subMenu.classList.remove('open');
+      }
+    });
+  },
+
+  toggleBlackOverlay: function() {
+    this.blackOverlay.classList.toggle('open');
+  },
+
+  showBlackOverlay: function() {
+    this.blackOverlay.classList.add('open');
+  },
+
+  hideBlackOverlay: function() {
+    this.blackOverlay.classList.remove('open');
+  },
+
+  getDOMObject: function() {
+    return this.DOMObject;
+  },
+
+  getChildren: function() {
+    return this.DOMObject.children;
   }
 }
 
@@ -144,6 +200,30 @@ var MenuItem = function(object) {
 
   // Build the main DOM object for this menu item
   this.buildDOMObject();
+
+  this.showSubMenu = new CustomEvent(
+    "unfold",
+    {
+        detail: {
+            secondaryMenu: this.getSecondaryMenu(),
+            time: new Date(),
+        },
+        bubbles: true,
+        cancelable: true
+    }
+  );
+
+  this.hideSubMenu = new CustomEvent(
+    "shrink",
+    {
+      detail: {
+          secondaryMenu: this.getSecondaryMenu(),
+          time: new Date(),
+      },
+      bubbles: true,
+      cancelable: true
+    }
+  )
 };
 
 MenuItem.prototype = {
@@ -193,17 +273,28 @@ MenuItem.prototype = {
     return listItem;
   },
 
+  /* Builds events for this A element
+   *
+   * @param   {DOMObject} itemLink    : the A item which we will put the events
+   * @return  void
+   */
   buildEvents: function(itemLink) {
+    //Save this for inner functions
     let _self = this;
 
+    //Set onclick event
     itemLink.onclick = function(e) {
+      // Prevent navigation
       e.preventDefault();
 
-      hideAllSecondaryMenus( _self.getSecondaryMenu() );
-
+      //  If this item has children
       if (_self.hasChildren()) {
+        // Show or hide secondaryMenu
         _self.toggleSecondaryMenu();
-      } else {
+
+      } else { // If this item has no children
+
+        // Navigate to self link
         window.location.href = _self.link;
       }
     }
@@ -245,7 +336,7 @@ MenuItem.prototype = {
 
   /* Validate if this menu item has sub items
    *
-   * @return  {True/False}.
+   * @return  {boolean}.
    */
   hasChildren: function() {
     if (this.children.length > 0) {
@@ -276,17 +367,48 @@ MenuItem.prototype = {
     return this.label;
   },
 
-  // Show functions
-  showSecondaryMenu: function() {
-    let secondaryMenu = this.DOMObject.getElementsByClassName('secondary-menu')[0];
-    secondaryMenu.classList.add("open");
+  // SecondaryMenu functions
 
-    showBlackOverlay();
+  /* show the Secondary Menu of this item
+   *
+   * @return  void.
+   */
+  showSecondaryMenu: function() {
+    this.getSecondaryMenu().classList.add("open");
+
+    //Dispatch the unfold event
+    this.DOMObject.dispatchEvent(this.showSubMenu);
   },
 
+  /* toggle the Secondary Menu of this item
+   *
+   * @return  void.
+   */
   toggleSecondaryMenu: function() {
-    let secondaryMenu = this.getSecondaryMenu();
-    secondaryMenu.classList.toggle("open");
+    this.getSecondaryMenu().classList.toggle("open");
+
+    // Send the proper events
+
+    // If secondary Menu is open
+    if (this.secondaryMenuIsOpen()) {
+      //Dispatch the proper event
+      this.DOMObject.dispatchEvent(this.showSubMenu);
+    } else {
+      // Dispatch the event where the secondary Menu is shrink
+      _self.DOMObject.dispatchEvent(_self.hideSubMenu);
+    }
+  },
+
+  /* Evaluate if the secondary Menu is open
+   *
+   * @return  {boolean}.
+   */
+  secondaryMenuIsOpen: function() {
+    if (this.getSecondaryMenu().classList.contains("open")) {
+      return true;
+    }
+
+    return false;
   }
 
 }
@@ -296,5 +418,11 @@ MenuItem.prototype = {
 var primaryMenu = new Menu({name: 'primary-menu'});
 primaryMenu.populate();
 
-var responsiveMenu = new Menu({name: 'primary-responsive-menu'});
+var responsiveMenu = new Menu({name: 'primary-responsive-menu'}, true);
 responsiveMenu.populate();
+
+
+window.addEventListener('resize', function(){
+  primaryMenu.closeAll();
+  responsiveMenu.closeAll();
+}, false);
