@@ -13,7 +13,7 @@ xhr.onreadystatechange = function() {
     if (xhr.status === OK)
     // console.log(xhr.responseText); // 'This is the returned text.'
 
-    var menuData = JSON.parse(xhr.responseText);
+      var menuData = JSON.parse(xhr.responseText);
 
     for (let object of menuData.items) {
       let menuItem = new MenuItem(object);
@@ -27,6 +27,7 @@ xhr.onreadystatechange = function() {
     console.log('Error: ' + xhr.status); // An error occurred during the request.
   }
 }
+
 
 /* MenuItem Model : builds a MenuItem from an json, that can be append in a menu
  *
@@ -67,7 +68,7 @@ MenuItem.prototype = {
    *
    * @return  {DOMObject} listItem     : the DOMObject containing the main item with link and label
    */
-  buildMainItemDOM : function() {
+  buildMainItemDOM: function() {
     // Create DOM elements to build the menu
     let listItem = document.createElement("li");
     let itemLink = document.createElement("a");
@@ -110,7 +111,7 @@ MenuItem.prototype = {
    *
    * @return  {DOMObject} secondaryMenu     : the DOMObject containing the secondary menu and items
    */
-  buildChildrenDOM : function() {
+  buildChildrenDOM: function() {
     // Create the ul element to host the secondaryMenu
     let secondaryMenu = document.createElement("ul");
     // Assign properties to the secondaryMenu
@@ -172,7 +173,24 @@ MenuItem.prototype = {
   showSecondaryMenu: function() {
     let secondaryMenu = this.DOMObject.getElementsByClassName('secondary-menu')[0];
     secondaryMenu.style.display = "block";
-  }
+
+    showBlackOverlay();
+  },
+
+}
+
+let blackOverlay = document.getElementById('black-overlay');
+
+blackOverlay.addEventListener("click", function() {
+  hideAllSecondaryMenus();
+
+  blackOverlay.style.display = 'none';
+});
+
+function showBlackOverlay() {
+  let blackOverlay = document.getElementById('black-overlay');
+
+    blackOverlay.style.display = 'block';
 }
 
 function hideAllSecondaryMenus() {
@@ -181,5 +199,4 @@ function hideAllSecondaryMenus() {
   for (let i = 0; i < menus.length; i++) {
     menus[i].style.display = "none";
   }
-
 }
