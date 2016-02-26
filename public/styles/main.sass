@@ -40,6 +40,9 @@ h1
   display: none
   transition: all 1s linear
 
+#black-overlay.open
+  display: block
+
 // Main Menu
 
 #main-logo
@@ -54,6 +57,7 @@ h1
   @media (max-width:$mobile-size)
     position: absolute
     left: -100%
+    top: -6px
 
 #main-logo.open
   @media (max-width:$mobile-size)
@@ -109,8 +113,10 @@ h1
       top: 46px
       z-index: 15
       width: 250px
-      padding-top: 12px
-      display: none
+      padding-top: 0
+
+      overflow: hidden
+      max-height: 0
       transition: all 0.2s
 
       >li
@@ -126,11 +132,15 @@ h1
           color: $huge-magenta
           cursor: pointer
 
-  // Responsive Menu
+    .secondary-menu.open
+      max-height: 1000px
+      padding-top: 12px
+
+  // Responsive Menu Icon
   .menu-icon
     height: 72px
     position: absolute
-    top: 0
+    top: -6px
     left: 0
     transition: all 0.5s
 
@@ -139,6 +149,33 @@ h1
     left: 100%
     transform: translate(-100%, 0)
 
+// Responsive Menu
+
+#primary-responsive-menu
+  padding-top: 12px
+  >li
+    font: 24px/1 $huge-font
+    // height: 48px
+    a
+      display: block
+      padding: 12px 0 12px 24px
+      color: #000
+
+    a:hover
+      background-color: $light-gray
+      cursor: pointer
+      color: $huge-magenta
+
+    .secondary-menu
+      font: 24px $galaxie-font
+      overflow: hidden
+      max-height: 0
+      transition: all 0.5s
+
+    .secondary-menu.open
+      max-height: 1000px
+
+
 // offcanvas Muscle - Based on https://github.com/nosoycesaros/offcanvas-muscle of my autorship
 // Modified to work better on this project
 .offcanvas
@@ -146,7 +183,7 @@ h1
   width: 75%
   height: 100%
   position: fixed
-  top: 72px
+  top: 60px
   z-index: 0
 
   padding: 0
@@ -158,6 +195,7 @@ h1
 .offcanvas.left
     left: -100%
 .offcanvas.left.open
+  @media (max-width:$mobile-size)
     left: 0
 
 .site-wrap
@@ -170,6 +208,7 @@ h1
     z-index: 1
 
 .site-wrap.open.left
+  @media (max-width:$mobile-size)
     left: 75%
 
 .site-wrap, .offcanvas

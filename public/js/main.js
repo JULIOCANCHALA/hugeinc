@@ -16,17 +16,117 @@ xhr.onreadystatechange = function() {
       var menuData = JSON.parse(xhr.responseText);
 
     for (let object of menuData.items) {
-      let menuItem = new MenuItem(object);
-
+      let primaryMenuItem = new MenuItem(object);
       let primaryMenu = document.getElementsByClassName("primary-menu")[0];
 
-      menuItem.addToMenu(primaryMenu);
+      primaryMenuItem.addToMenu(primaryMenu);
+
+
+      let responsiveMenuItem = new MenuItem(object);
+      let responsiveMenu = document.getElementById("primary-responsive-menu");
+
+      responsiveMenuItem.addToMenu(responsiveMenu);
     }
 
   } else {
     console.log('Error: ' + xhr.status); // An error occurred during the request.
   }
 }
+
+
+// TODO: Polish blackOverlay code
+let blackOverlay = document.getElementById('black-overlay');
+
+blackOverlay.addEventListener("click", function() {
+  hideAllSecondaryMenus();
+
+  blackOverlay.classList.remove('open');
+
+  closeOffcanvasMenu('primary-responsive-menu');
+});
+
+function showBlackOverlay() {
+  let blackOverlay = document.getElementById('black-overlay');
+
+    blackOverlay.classList.add('open');
+}
+
+function hideAllSecondaryMenus() {
+  var menus = document.getElementsByClassName('secondary-menu');
+
+  for (let i = 0; i < menus.length; i++) {
+    menus[i].classList.remove('open');
+  }
+}
+
+function hideAllSecondaryMenus(secondaryMenu) {
+  var menus = document.getElementsByClassName('secondary-menu');
+
+  for (let i = 0; i < menus.length; i++) {
+    if (menus[i] != secondaryMenu) {
+      menus[i].classList.remove('open');
+    }
+  }
+}
+
+// offcanvas Muscle - Based on https://github.com/nosoycesaros/offcanvas-muscle of my autorship
+offcanvasMuscle();
+
+function offcanvasMuscle() {
+    var triggers = document.getElementsByClassName('offcanvas-trigger');
+
+    for (var i = 0; i < triggers.length; i++) {
+        triggers[i].addEventListener("click", function() {
+            var targetMenu = this.getAttribute('offcanvas-menu');
+            toggleOffcanvasMuscleMenu(targetMenu);
+        });
+    }
+}
+
+function toggleOffcanvasMuscleMenu(menuId) {
+    var myMenu = document.getElementById(menuId);
+
+    myMenu.classList.toggle('open');
+
+    var siteWrap = document.getElementsByClassName('site-wrap')[0];
+    siteWrap.classList.toggle('open');
+
+    if (myMenu.classList.contains('left'))
+        siteWrap.classList.toggle('left');
+
+    // Added for this project
+    var menuIcon = document.getElementsByClassName('menu-icon');
+    menuIcon[0].classList.toggle('open');
+
+    var mainLogo = document.getElementById('main-logo');
+    mainLogo.classList.toggle('open');
+
+    blackOverlay.classList.toggle('open');
+}
+
+function closeOffcanvasMenu(menuId) {
+    var myMenu = document.getElementById(menuId);
+
+    myMenu.classList.remove('open');
+
+    var siteWrap = document.getElementsByClassName('site-wrap')[0];
+    siteWrap.classList.remove('open');
+
+    if (myMenu.classList.contains('left'))
+        siteWrap.classList.remove('left');
+
+    // Added for this project
+    var menuIcon = document.getElementsByClassName('menu-icon');
+    menuIcon[0].classList.remove('open');
+
+    var mainLogo = document.getElementById('main-logo');
+    mainLogo.classList.remove('open');
+
+    blackOverlay.classList.remove('open');
+}
+
+
+
 
 
 /* MenuItem Model : builds a MenuItem from an json, that can be append in a menu
@@ -96,10 +196,10 @@ MenuItem.prototype = {
     itemLink.onclick = function(e) {
       e.preventDefault();
 
-      hideAllSecondaryMenus();
+      hideAllSecondaryMenus( _self.getSecondaryMenu() );
 
       if (_self.hasChildren()) {
-        _self.showSecondaryMenu();
+        _self.toggleSecondaryMenu();
       } else {
         window.location.href = _self.link;
       }
@@ -161,6 +261,10 @@ MenuItem.prototype = {
     return this.DOMObject;
   },
 
+  getSecondaryMenu: function() {
+    return this.DOMObject.getElementsByClassName('secondary-menu')[0];
+  },
+
   /* Returns the label of this menu item
    *
    * @return  void.
@@ -172,66 +276,14 @@ MenuItem.prototype = {
   // Show functions
   showSecondaryMenu: function() {
     let secondaryMenu = this.DOMObject.getElementsByClassName('secondary-menu')[0];
-    secondaryMenu.style.display = "block";
+    secondaryMenu.classList.add("open");
 
     showBlackOverlay();
   },
 
-}
-
-
-// TODO: Polish blackOverlay code
-let blackOverlay = document.getElementById('black-overlay');
-
-blackOverlay.addEventListener("click", function() {
-  hideAllSecondaryMenus();
-
-  blackOverlay.style.display = 'none';
-});
-
-function showBlackOverlay() {
-  let blackOverlay = document.getElementById('black-overlay');
-
-    blackOverlay.style.display = 'block';
-}
-
-function hideAllSecondaryMenus() {
-  var menus = document.getElementsByClassName('secondary-menu');
-
-  for (let i = 0; i < menus.length; i++) {
-    menus[i].style.display = "none";
+  toggleSecondaryMenu: function() {
+    let secondaryMenu = this.getSecondaryMenu();
+    secondaryMenu.classList.toggle("open");
   }
-}
 
-
-// offcanvas Muscle - Based on https://github.com/nosoycesaros/offcanvas-muscle of my autorship
-offcanvasMuscle();
-
-function offcanvasMuscle() {
-    var triggers = document.getElementsByClassName('offcanvas-trigger');
-
-    for (var i = 0; i < triggers.length; i++) {
-        triggers[i].addEventListener("click", function() {
-            var targetMenu = this.getAttribute('offcanvas-menu');
-            toggleOffcanvasMuscleMenu(targetMenu);
-        });
-    }
-}
-
-function toggleOffcanvasMuscleMenu(menuId) {
-    var myMenu = document.getElementById(menuId);
-
-    myMenu.classList.toggle('open');
-
-    var siteWrap = document.getElementsByClassName('site-wrap')[0];
-    siteWrap.classList.toggle('open');
-
-    if (myMenu.classList.contains('left'))
-        siteWrap.classList.toggle('left');
-
-        var menuIcon = document.getElementsByClassName('menu-icon');
-        menuIcon[0].classList.toggle('open');
-
-        var mainLogo = document.getElementById('main-logo');
-        mainLogo.classList.toggle('open');
 }
