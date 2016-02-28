@@ -13,11 +13,18 @@
   },
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "wdio wdio.conf.js",
     "start": "node ./bin/www"
   },
   "dependencies": {
     "express": "~4.2.0",
     "morgan": "~1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.2.0",
+    "selenium-standalone": "^5.0.0",
+    "wdio-mocha-framework": "^0.2.11",
+    "webdriverio": "^4.0.3"
   }
 }
