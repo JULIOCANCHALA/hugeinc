@@ -1,6 +1,6 @@
 # Huge Navigation Exercise - By Cesar Zapata
 
-This is the Huge Navigation Exercise completed by Cesar Zapata, using only Vanilla Javascript, and SASS.
+This is the Huge Navigation Exercise completed by Cesar Zapata, using Vanilla Javascript, and SASS.
 
 ## Get Started
 
@@ -62,7 +62,7 @@ At a high level the navigation will have two main states:
 * \>= 768px: Desktop. The nav will display as a horizontal nav. Top level nav items will display sub-nav items when clicked. No hamburger will be shown.
 
 ## Version
-0.1.0
+1.0.0
 
 ## Files
 
