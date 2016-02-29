@@ -7,6 +7,12 @@ This is the Huge Navigation Exercise completed by Cesar Zapata, using Vanilla Ja
 ###Requirements
 * Node.js and npm (You get both when you <a href="https://docs.npmjs.com/getting-started/installing-node">install Node.js</a>.)
 
+###Start in local
+```
+$ git clone https://github.com/nosoycesaros/hugeinc
+$ cd hugeinc
+```
+
 ### Run
 
 ```
@@ -17,12 +23,12 @@ After this you can go to <a href="http://localhost:3000/">http://localhost:3000/
 
 ## Testing
 
-In order to execute the E2E Test you need to install and run <a href="https://www.npmjs.com/package/selenium-standalone">selenium-standalone</a>, please execute this commands before:
+In order to execute the E2E Test you need to install and run <a href="https://www.npmjs.com/package/selenium-standalone">selenium-standalone</a>, execute this commands as root to get it:
 
 ```
-npm install selenium-standalone@latest -g
-selenium-standalone install
-selenium-standalone start
+$ npm install selenium-standalone@latest -g
+$ selenium-standalone install
+$ selenium-standalone start
 ```
 
 You are ready to test by executing:
