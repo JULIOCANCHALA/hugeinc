@@ -1,6 +1,13 @@
 # Huge Navigation Exercise - By Cesar Zapata
 
-This is the Huge Navigation Exercise completed by Cesar Zapata, using only Vanilla Javascript, and SASS. In order to run the test execute:
+This is the Huge Navigation Exercise completed by Cesar Zapata, using only Vanilla Javascript, and SASS.
+
+## Get Started
+
+###Requirements
+* Node.js and npm (You get both when you <a href="https://docs.npmjs.com/getting-started/installing-node">install Node.js</a>.)
+
+### Run
 
 ```
 $ npm i && npm start
@@ -65,19 +72,6 @@ At a high level the navigation will have two main states:
 ## API
 
 * GET /api/nav.json - returns a JSON response representing the items in the nav.
-
-## Get Started
-
-###Requirements
-* Node.js and npm (You get both when you <a href="https://docs.npmjs.com/getting-started/installing-node">install Node.js</a>.)
-
-###Install the exercise locally
-```
-git clone git@github.com:hugeinc/NavExercise.git
-cd NavExercise
-npm install
-npm start
-```
 
 ## Design Specifications
 

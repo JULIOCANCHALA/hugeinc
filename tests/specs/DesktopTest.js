@@ -1,10 +1,21 @@
+/*
+ * Desktop Test created by Cesar Zapata [https://github.com/nosoycesaros]
+ * For the Huge Navigation Exercise
+ * Date: 26.02.2016
+ *
+ * This files tests the behavior of the page in Desktop screens
+ */
 
 var assert = require('assert');
 
 beforeEach(function() {
+    //Noavigate to the test
     browser.url('/');
 });
 
+/**
+ *  Test the Desktop Menu
+ */
 describe('Huge Desktop Menu', function() {
 
   /**
@@ -21,6 +32,27 @@ describe('Huge Desktop Menu', function() {
 
         // browser.getCssProperty(menuItem+">a", 'color').parsed.hex.should.be.equal("#ec008c");
         browser.getCssProperty(menuItem+">a", 'background-color').parsed.hex.should.be.equal("#ffffff");
+      })
+    });
+
+    /**
+     * If item with URL is clicked, it should change the browser URL
+     */
+    it('On click, if item contains a URL, Primary Navigation navigates to a new page', function(){
+      var itemsToNavigate = [1,5,6];
+
+      itemsToNavigate.forEach(function(e, i){
+        //Get the temporary menuItem
+        var menuItem = "#primary-menu>li:nth-child("+e+")";
+
+        //Get the actual URL
+        var actualUrl = browser.getUrl();
+
+        // Click the menu item
+        browser.click(menuItem);
+
+        // The actual URL should be differnet from preovious
+        browser.getUrl().should.not.be.equal(actualUrl);
       })
     });
 
@@ -64,26 +96,8 @@ describe('Huge Desktop Menu', function() {
       })
     });
 
-    /**
-     * If item with URL is clicked, it should change the browser URL
-     */
-    it('On click, if item contains a URL, Primary Navigation navigates to a new page', function(){
-      var itemsToNavigate = [1,5,6];
-
-      itemsToNavigate.forEach(function(e, i){
-        //Get the temporary menuItem
-        var menuItem = "#primary-menu>li:nth-child("+e+")";
-
-        //Get the actual URL
-        var actualUrl = browser.getUrl();
-
-        // Click the menu item
-        browser.click(menuItem);
-
-        // The actual URL should be differnet from preovious
-        browser.getUrl().should.not.be.equal(actualUrl);
-      })
-    });
+    it("On hover in, Secondary Navigation changes color (magenta/light gray)");
+    it("On click, Secondary navigates to a new page.");
 
     /**
      * If click on black overlay, it should hide submenus and overlay

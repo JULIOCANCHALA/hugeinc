@@ -1,3 +1,9 @@
+/*
+ * Menu Model created by Cesar Zapata [https://github.com/nosoycesaros]
+ * For the Huge Navigation Exercise
+ * Date: 26.02.2016
+ */
+
 var Menu = window.Menu = (function(window, document, MenuItem, undefined) {
   'use strict';
 

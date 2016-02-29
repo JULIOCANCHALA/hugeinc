@@ -1,3 +1,9 @@
+/*
+ * Code created by Cesar Zapata [https://github.com/nosoycesaros]
+ * For the Huge Navigation Exercise
+ * Date: 26.02.2016
+ */
+
 var Server = window.Server = (function(window, document, undefined) {
 
   "use strict";

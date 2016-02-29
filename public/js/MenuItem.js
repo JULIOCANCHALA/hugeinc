@@ -1,3 +1,9 @@
+/*
+ * MenuItem Model created by Cesar Zapata [https://github.com/nosoycesaros]
+ * For the Huge Navigation Exercise
+ * Date: 26.02.2016
+ */
+
 var MenuItem = window.MenuItem = (function(window, document, undefined) {
   'use strict';
 
