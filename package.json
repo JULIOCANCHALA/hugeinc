@@ -23,7 +23,6 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-as-promised": "^5.2.0",
-    "selenium-standalone": "^5.0.0",
     "wdio-mocha-framework": "^0.2.11",
     "webdriverio": "^4.0.3"
   }

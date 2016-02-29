@@ -1,4 +1,28 @@
-# Huge Navigation Exercise
+# Huge Navigation Exercise - By Cesar Zapata (Cesaros)
+
+This is the Huge Navigation Exercise completed by Cesar Zapata, using only Vanilla Javascript, and SASS. In order to run the test execute:
+
+```
+$ npm i && npm start
+```
+
+After this you can go to `http://localhost:3000/`
+
+## Testing
+
+In order to execute the E2E Test you need to install and run `selenium-standalone`, please execute this commands before:
+
+```
+npm install selenium-standalone@latest -g
+selenium-standalone install
+selenium-standalone start
+```
+
+You are ready to test by executing:
+
+```
+npm test
+```
 
 ## Overview
 
